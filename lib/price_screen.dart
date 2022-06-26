@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'coin_data.dart';
+import 'package:flutter/cupertino.dart';
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -6,6 +8,27 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+  List<DropdownMenuItem<String>> getDropDownItems() {
+    List<DropdownMenuItem<String>> dropList = [];
+    for (String currency in currenciesList) {
+      var newItem = DropdownMenuItem(
+        child: Text(currency),
+        value: currency,
+      );
+      dropList.add(newItem);
+    }
+    return dropList;
+  }
+
+  List<Widget> cupertinoLists() {
+    List<Text> curlist = [];
+    for (String currency in currenciesList) {
+      curlist.add(Text(currency));
+    }
+    return curlist;
+  }
+
+  String dropdownValue = 'USD';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +47,7 @@ class _PriceScreenState extends State<PriceScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              child: Padding(
+              child: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
                   '1 BTC = ? USD',
@@ -38,14 +61,40 @@ class _PriceScreenState extends State<PriceScreen> {
             ),
           ),
           Container(
-            height: 150.0,
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: 30.0),
-            color: Colors.lightBlue,
-            child: null,
-          ),
+              height: 150.0,
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: 30.0),
+              color: Colors.lightBlue,
+              child: CupertinoPicker(
+                  itemExtent: 32.0,
+                  onSelectedItemChanged: (selectedIndex) {
+                    print(selectedIndex);
+                    print(currenciesList[selectedIndex]);
+                  },
+                  children: cupertinoLists())),
         ],
       ),
     );
   }
 }
+
+
+// currenciesList
+//                   .map((String item) =>
+//                       DropdownMenuItem<String>(child: Text(item), value: item))
+//                   .toList(),
+
+// DropdownButton<String>(
+//               // elevation: 20,
+//               dropdownColor: Color.fromARGB(255, 13, 108, 163),
+//               items: getDropDownItems().toList(),
+
+//               onChanged: ((String? newVal) {
+//                 setState(() {
+//                   dropdownValue = newVal.toString();
+//                 });
+
+//                 print(newVal);
+//               }),
+//               value: dropdownValue,
+//             ),
